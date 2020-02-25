@@ -1,7 +1,6 @@
 package pl.swioklo.arkadiusz.java.carsharing.web.controller;
 
 import pl.swioklo.arkadiusz.java.carsharing.api.exception.CarException;
-import pl.swioklo.arkadiusz.java.carsharing.dao.entity.CarEntity;
 import pl.swioklo.arkadiusz.java.carsharing.service.CarService;
 import pl.swioklo.arkadiusz.java.carsharing.web.model.CarModel;
 
@@ -39,11 +38,11 @@ public class CarController {
     }
     
     public CarModel read(String vin) {
-       return carService.read(vin);
+        return carService.read(vin);
     }
     
     public CarModel update(String vin, CarModel carModel) {
-
+        return null;
     }
     
     public void delete(String vin) {
