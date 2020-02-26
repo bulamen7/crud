@@ -63,16 +63,14 @@ public class CarDao {
         return null;
     }
     
-<<<<<<< HEAD
-    public CarEntity update(String vin, CarEntity carEntity) {
-=======
     
     public CarEntity update(String vin, CarEntity carEntity) {
         // JJ: wartość istniejącego klucza w mapie zostanie zaktualizowana
->>>>>>> e14d27d1064b7ab6286cd719541407c381b0de51
+        
         dataBase.put(vin, carEntity);
         return dataBase.get(vin);
     }
+    
     
     public void delete(String vin) {
         Iterator<Map.Entry<String, CarEntity>> iter = dataBase.entrySet().iterator();
