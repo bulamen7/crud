@@ -65,8 +65,10 @@ public class CarDao {
     }
     
     
-    public void update() {
-    
+    public CarEntity update(String vin, CarEntity carEntity) {
+        // JJ: wartość istniejącego klucza w mapie zostanie zaktualizowana
+        dataBase.put(vin, carEntity);
+        return dataBase.get(vin);
     }
     
     public void delete(String vin) {
