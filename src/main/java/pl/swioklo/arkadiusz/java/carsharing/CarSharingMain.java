@@ -2,6 +2,7 @@ package pl.swioklo.arkadiusz.java.carsharing;
 
 import pl.swioklo.arkadiusz.java.carsharing.api.exception.CarException;
 import pl.swioklo.arkadiusz.java.carsharing.dao.CarDao;
+import pl.swioklo.arkadiusz.java.carsharing.dao.entity.CarEntity;
 import pl.swioklo.arkadiusz.java.carsharing.service.CarService;
 import pl.swioklo.arkadiusz.java.carsharing.service.mapper.CarMapper;
 import pl.swioklo.arkadiusz.java.carsharing.web.controller.CarController;
@@ -25,7 +26,8 @@ public class CarSharingMain {
 //        LOGGER.info(carModels + " ");
         
         // Scanner scanner = new Scanner(System.in);
-        System.out.println(carService.read("WAFASF3VSDVZVZXA"));
+        carDao.update("WAFASF3VSA", new CarEntity("11", "sdf", "33", 100));
+        System.out.println(carDao.read("WAFASF3VSA"));
     
     }
 }

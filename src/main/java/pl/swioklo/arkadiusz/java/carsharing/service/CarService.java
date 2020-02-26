@@ -52,6 +52,19 @@ public class CarService {
     }
 
     public CarModel update(String vin, CarModel carModel) {
+<<<<<<< HEAD
+        
+        CarEntity readCarEntitiy = carDao.read(vin);
+        CarModel readCarModel = carMapper.fromEntityToModel(readCarEntitiy);
+        
+        readCarEntitiy.setModel(carModel.getModel());
+        readCarEntitiy.setType(carModel.getType());
+        readCarEntitiy.setYearOfProduction(carModel.getYearOfProduction());
+        
+        CarEntity carEntity = carMapper.fromModelToEntity(readCarModel);
+        CarEntity updateCarEntity = carDao.update(vin,carEntity);
+        return carMapper.fromEntityToModel(updateCarEntity);
+=======
 //        for (CarEntity carEntity : carDao.list()) {
 //            if (carEntity.getVin().equals(vin)) {
 //                carEntity.setModel(carModel.getModel());
@@ -74,6 +87,7 @@ public class CarService {
         CarEntity updatedCarEntity = carDao.update(vin, carEntity);
 
         return carMapper.fromEntityToModel(updatedCarEntity);
+>>>>>>> e14d27d1064b7ab6286cd719541407c381b0de51
     }
 
     public void delete(String vin) {
