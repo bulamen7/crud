@@ -7,11 +7,8 @@ import pl.swioklo.arkadiusz.java.carsharing.dao.entity.CarEntity;
 import pl.swioklo.arkadiusz.java.carsharing.service.CarCsvUtils;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,10 +19,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import static pl.swioklo.arkadiusz.java.carsharing.dao.CommonCarDao.DB_FILE;
+
 public class CarDao {
     private static final Logger LOGGER = Logger.getLogger(CarDao.class.getName());
-    public static final String NEW_LINE_SEPARATOR = "\n";
-    public static String DB_FILE = "src/main/resources/db.txt";
     
     private Map<String, CarEntity> dataBase = new HashMap<>();
     
@@ -92,64 +89,65 @@ public class CarDao {
     }
     
     public CarEntity update(String vin, CarEntity updateCarEntity) {
-        File file = Paths.get(DB_FILE).toFile();
-        
-        try (FileReader fileReader = new FileReader(file);
-             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-            
-            StringBuilder oldContent = new StringBuilder();
-            String readLine;
-            while ((readLine = bufferedReader.readLine()) != null) {
-                CarEntity carEntity = CarCsvUtils.csvToCar(readLine);
-                if (vin.equalsIgnoreCase(carEntity.getVin())) {
-                    String csvLine = CarCsvUtils.carToCsv(updateCarEntity);
-                    oldContent.append(csvLine).append(NEW_LINE_SEPARATOR);
-                } else {
-                    oldContent.append(readLine).append("\n");
-                }
-            }
-            FileWriter fileWriter = new FileWriter(file);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(oldContent.toString());
-            
-            bufferedWriter.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return updateCarEntity;
+//        File file = Paths.get(DB_FILE).toFile();
+//
+//        try (FileReader fileReader = new FileReader(file);
+//             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+//
+//            StringBuilder oldContent = new StringBuilder();
+//            String readLine;
+//            while ((readLine = bufferedReader.readLine()) != null) {
+//                CarEntity carEntity = CarCsvUtils.csvToCar(readLine);
+//                if (vin.equalsIgnoreCase(carEntity.getVin())) {
+//                    String csvLine = CarCsvUtils.carToCsv(updateCarEntity);
+//                    oldContent.append(csvLine).append(NEW_LINE_SEPARATOR);
+//                } else {
+//                    oldContent.append(readLine).append("\n");
+//                }
+//            }
+//            FileWriter fileWriter = new FileWriter(file);
+//            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+//            bufferedWriter.write(oldContent.toString());
+//
+//            bufferedWriter.close();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return updateCarEntity;
+        CommonCarDao commonCarDao = new CommonCarDao();
+        return commonCarDao.updateOrDelete(vin, updateCarEntity, true);
     }
     
     
     public void delete(String vin) {
-        File file = Paths.get(DB_FILE).toFile();
-        
-        try (FileReader fileReader = new FileReader(file);
-             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-            
-            StringBuilder oldContent = new StringBuilder();
-            String readLine;
-            while ((readLine = bufferedReader.readLine()) != null) {
-                CarEntity carEntity = CarCsvUtils.csvToCar(readLine);
-                if (!vin.equalsIgnoreCase(carEntity.getVin())) {
-                    oldContent.append(readLine).append("\n");
-                    //String csvLine = CarCsvUtils.carToCsv(updateCarEntity);
-                    // oldContent.append(csvLine).append(NEW_LINE_SEPARATOR);
-                }
-            }
-            FileWriter fileWriter = new FileWriter(file);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            bufferedWriter.write(oldContent.toString());
-            
-            bufferedWriter.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        
-        //        CarEntity carEntity = dataBase.get(vin);
-//        dataBase.remove(carEntity);
+//        File file = Paths.get(DB_FILE).toFile();
+//
+//        try (FileReader fileReader = new FileReader(file);
+//             BufferedReader bufferedReader = new BufferedReader(fileReader)) {
+//
+//            StringBuilder oldContent = new StringBuilder();
+//            String readLine;
+//            while ((readLine = bufferedReader.readLine()) != null) {
+//                CarEntity carEntity = CarCsvUtils.csvToCar(readLine);
+//                if (!vin.equalsIgnoreCase(carEntity.getVin())) {
+//                    oldContent.append(readLine).append("\n");
+//                    //String csvLine = CarCsvUtils.carToCsv(updateCarEntity);
+//                    // oldContent.append(csvLine).append(NEW_LINE_SEPARATOR);
+//                }
+//            }
+//            FileWriter fileWriter = new FileWriter(file);
+//            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+//            bufferedWriter.write(oldContent.toString());
+//
+//            bufferedWriter.close();
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+        CommonCarDao commonCarDao = new CommonCarDao();
+        commonCarDao.updateOrDelete(vin, null, false);
     }
 }
