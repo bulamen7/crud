@@ -2,7 +2,6 @@ package pl.swioklo.arkadiusz.java.carsharing;
 
 import pl.swioklo.arkadiusz.java.carsharing.api.exception.CarException;
 import pl.swioklo.arkadiusz.java.carsharing.dao.CarDao;
-import pl.swioklo.arkadiusz.java.carsharing.dao.entity.CarEntity;
 import pl.swioklo.arkadiusz.java.carsharing.service.CarService;
 import pl.swioklo.arkadiusz.java.carsharing.service.mapper.CarMapper;
 import pl.swioklo.arkadiusz.java.carsharing.web.controller.CarController;
@@ -12,6 +11,7 @@ import java.util.logging.Logger;
 
 public class CarSharingMain {
     private static final Logger LOGGER = Logger.getLogger(CarSharingMain.class.getName());
+    public static final String VIN = "WAFASF3VSA";
     
     public static void main(String[] args) throws CarException {
         CarDao carDao = new CarDao();
@@ -19,15 +19,18 @@ public class CarSharingMain {
         CarService carService = new CarService(carDao, carMapper);
         CarController carController = new CarController(carService);
         
-        carService.create(new CarModel("WAWEADASCCZ12131", "AUDI", "A4", 2004));
-        carService.create(new CarModel("WAFASF3VSDVZVZXA", "Volksvagen", "Golf", 2002));
-        carService.create(new CarModel("WAFASF3VSA", "Audi", "a8", 2010));
+       carController.create(new CarModel("WAWEADASCCZ12131", "AUDI", "A4", 2004));
+       carController.create(new CarModel("WAFASF3VSDVZVZXA", "Volksvagen", "Golf", 2002));
+       carController.create(new CarModel("WAFASF3VSA", "Audi", "a8", 2010));
 //        List<CarModel> carModels = carController.list();
 //        LOGGER.info(carModels + " ");
         
         // Scanner scanner = new Scanner(System.in);
-        carDao.update("WAFASF3VSA", new CarEntity("11", "sdf", "33", 100));
-        System.out.println(carDao.read("WAFASF3VSA"));
+        carController.update("WAFASF3VSA", new CarModel("11", "sdf", "33", 100));
+        System.out.println(carDao.read(VIN));
+        carController.delete(VIN);
+        System.out.println(carController.list());
+    
     
     }
 }
