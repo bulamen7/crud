@@ -1,7 +1,7 @@
 package pl.swioklo.arkadiusz.java.carsharing.service;
 
 import pl.swioklo.arkadiusz.java.carsharing.api.exception.CarException;
-import pl.swioklo.arkadiusz.java.carsharing.api.exception.CarWriteException;
+import pl.swioklo.arkadiusz.java.carsharing.api.exception.CarCreateException;
 import pl.swioklo.arkadiusz.java.carsharing.dao.CarDao;
 import pl.swioklo.arkadiusz.java.carsharing.dao.entity.CarEntity;
 import pl.swioklo.arkadiusz.java.carsharing.service.mapper.CarMapper;
@@ -22,7 +22,7 @@ public class CarService {
         this.carMapper = carMapper;
     }
 
-    public List<CarModel> list() {
+    public List<CarModel> list() throws CarException {
         LOGGER.info("listing ");
         List<CarEntity> carEntities = carDao.list();
         return carMapper.fromEntitiesToModels(carEntities);
@@ -35,14 +35,14 @@ public class CarService {
         CarEntity createdCarEntity = null;
         try {
             createdCarEntity = carDao.create(carEntity);
-        } catch (CarWriteException e) {
+        } catch (CarCreateException e) {
             throw new CarException("couldnt create a car", e);
         }
 
         return carMapper.fromEntityToModel(createdCarEntity);
     }
 
-    public CarModel read(String vin) {
+    public CarModel read(String vin) throws CarException {
         for (CarEntity carEntity : carDao.list()) {
             if (carEntity.getVin().equals(vin)) {
                 return carMapper.fromEntityToModel(carEntity);
@@ -51,39 +51,26 @@ public class CarService {
         return null;
     }
 
-    public CarModel update(String vin, CarModel carModel) {
+    public CarModel update(String vin, CarModel carModel) throws CarException {
     
-//        for (CarEntity carEntity : carDao.list()) {
-//            if (carEntity.getVin().equals(vin)) {
-//                carEntity.setModel(carModel.getModel());
-//                carEntity.setType(carModel.getType());
-//                carEntity.setYearOfProduction(carModel.getYearOfProduction());
-//            }
-//        }
 
-        // JJ: delegujemy wyszukiwanie konkretnego samochodu do dao
         CarEntity readCarEntity = carDao.read(vin);
         CarModel readCarModel = carMapper.fromEntityToModel(readCarEntity);
 
-        // JJ: logika update danych samochodu
         readCarModel.setModel(carModel.getModel());
         readCarModel.setType(carModel.getType());
         readCarModel.setYearOfProduction(carModel.getYearOfProduction());
 
         CarEntity carEntity = carMapper.fromModelToEntity(readCarModel);
-        // JJ: delegujemy update samochodu do dao
+
         CarEntity updatedCarEntity = carDao.update(vin, carEntity);
 
         return carMapper.fromEntityToModel(updatedCarEntity);
 
     }
 
-    public void delete(String vin) {
+    public void delete(String vin) throws CarException {
         carDao.delete(vin);
     }
 
 }
-
-//TODO service, zaimplementowac read update delete
-//TODO wywolac metody dao w service
-//TODO w controllerze zaimpelentowac metody read update delete i wywolac odpowiednie metody z service

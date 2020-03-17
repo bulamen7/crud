@@ -1,5 +1,8 @@
 package pl.swioklo.arkadiusz.java.carsharing.dao;
 
+import pl.swioklo.arkadiusz.java.carsharing.api.exception.CarDataBaseException;
+import pl.swioklo.arkadiusz.java.carsharing.api.exception.CarException;
+import pl.swioklo.arkadiusz.java.carsharing.api.exception.CarManageException;
 import pl.swioklo.arkadiusz.java.carsharing.dao.entity.CarEntity;
 import pl.swioklo.arkadiusz.java.carsharing.service.CarCsvUtils;
 
@@ -18,7 +21,7 @@ public class CommonCarDao {
     public static final String NEW_LINE_SEPARATOR = "\n";
     public static String DB_FILE = "src/main/resources/db.txt";
     
-    public CarEntity updateOrDelete(String vin, CarEntity updateCarEntity, boolean update) {
+    public CarEntity updateOrDelete(String vin, CarEntity updateCarEntity, boolean update) throws CarException {
         File file = Paths.get(DB_FILE).toFile();
         
         try (FileReader fileReader = new FileReader(file);
@@ -43,9 +46,9 @@ public class CommonCarDao {
             
             bufferedWriter.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            throw new CarDataBaseException("blad podczas odczytu pliku", e);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new CarManageException("blad podczas aktualizacji lub usuniecia samochodu", e);
         }
         return updateCarEntity;
     }

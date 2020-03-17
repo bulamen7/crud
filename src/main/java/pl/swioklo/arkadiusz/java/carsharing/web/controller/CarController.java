@@ -14,38 +14,26 @@ public class CarController {
     public CarController(CarService carService) {
         this.carService = carService;
     }
-    //   public CarController() {
-//        carService = new CarService();
-//    }
-//
-    
-    public List<CarModel> list() {
+
+    public List<CarModel> list() throws CarException {
         LOGGER.info("listing");
         return carService.list();
     }
     
-    public CarModel create(CarModel carModel) {
+    public CarModel create(CarModel carModel) throws CarException {
         LOGGER.info("Creating " + carModel);
-        CarModel createdCarModel = null;
-        try {
-            createdCarModel = carService.create(carModel);
-        } catch (CarException e) {
-            // throw new
-            //bussinesowa obsluga wyjatkow
-            //   e.printStackTrace();
-        }
-        return createdCarModel;
+        return carService.create(carModel);
     }
     
-    public CarModel read(String vin) {
+    public CarModel read(String vin) throws CarException {
         return carService.read(vin);
     }
     
-    public CarModel update(String vin, CarModel carModel) {
-        return null;
+    public CarModel update(String vin, CarModel carModel) throws CarException {
+        return carService.update(vin, carModel);
     }
     
-    public void delete(String vin) {
+    public void delete(String vin) throws CarException {
         carService.delete(vin);
     }
 }

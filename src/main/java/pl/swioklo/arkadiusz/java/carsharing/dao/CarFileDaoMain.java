@@ -6,5 +6,7 @@ public class CarFileDaoMain {
     public static void main(String[] args) {
         CarFileDao carFileDao = new CarFileDao();
         carFileDao.create(new CarEntity());
+      
+        //TODO do czego sluzy ta klasa?
     }
 }
